@@ -18,6 +18,9 @@ from langchain_community . chat_message_histories import ChatMessageHistory
 from langchain_core.runnables import RunnablePassthrough
 from langchain import hub
 
+import warnings
+warnings.filterwarnings("ignore")
+
 TF_ENABLE_ONEDNN_OPTS=0
 
 embeddings = CohereEmbeddings(model="embed-english-light-v3.0", cohere_api_key="p2Jch3wcKWOD5I2QpMaamiSCkVcgjDEzSsyLyHf4")
