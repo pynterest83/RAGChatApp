@@ -18,14 +18,23 @@ from langchain_community . chat_message_histories import ChatMessageHistory
 from langchain_core.runnables import RunnablePassthrough
 from langchain import hub
 
+TF_ENABLE_ONEDNN_OPTS=0
+
 embeddings = CohereEmbeddings(model="embed-english-light-v3.0", cohere_api_key="p2Jch3wcKWOD5I2QpMaamiSCkVcgjDEzSsyLyHf4")
 
 client = QdrantClient(url="http://localhost:6333")
 
-client.create_collection(
-    collection_name="client_documents",
-    vectors_config=VectorParams(size=384, distance=Distance.COSINE),
-)
+if not client.collection_exists(collection_name="client_documents"):
+    client.create_collection(
+        collection_name="client_documents",
+        vectors_config={
+            "image": VectorParams(size=512, distance=Distance.DOT),
+            "text": VectorParams(size=384, distance=Distance.COSINE),
+        },
+    )
+else:
+    print(f"Collection client_documents already exists.")
+
 
 vector_store = QdrantVectorStore(
     client=client,
@@ -33,7 +42,7 @@ vector_store = QdrantVectorStore(
     embedding=embeddings,
 )
 
-retriever = vector_store.as_retriever()
+retriever = vector_store.as_retriever(search_type="similarity", search_kwargs={"k": 6})
 
 Loader = PyPDFLoader
 FILE_PATH = "D:/Code/RAGChatApp/test/2404.05961v2.pdf"
@@ -43,28 +52,29 @@ documents = loader.load()   # Load the document
 text_splitter = RecursiveCharacterTextSplitter(chunk_size=1000, chunk_overlap=100)
 docs = text_splitter.split_documents(documents)
 print("Number of documents: ", len(docs))
-print(docs[0])
 
-result =retriever.invoke("What is the main idea of the document?")
+vector_store.add_documents(docs)
 
-print(result)
+llm = ChatCohere(model="command-r-plus", cohere_api_key="p2Jch3wcKWOD5I2QpMaamiSCkVcgjDEzSsyLyHf4")
 
-llm = ChatCohere(model="command-r-plus")
+prompt = hub.pull("rlm/rag-prompt", api_key="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")
 
-prompt = hub. pull ("rlm/rag-prompt")
+# Function to format documents into a single string
+def format_docs(docs):
+    return "\n\n".join(doc.page_content for doc in docs)
 
-def format_docs ( docs ) :
-    return "\n\n". join (doc . page_content for doc in docs )
-
+# Construct the RAG chain
 rag_chain = (
-    {" context ": retriever | format_docs , " question ": RunnablePassthrough
-    () }
+    {"context": retriever | format_docs, "question": RunnablePassthrough()}
     | prompt
     | llm
-    | StrOutputParser ()
+    | StrOutputParser()
 )
 
-USER_QUESTION = " YOLOv10 là gì?"
-output = rag_chain . invoke ( USER_QUESTION )
-answer = output . split ('Answer :') [1]. strip ()
-print (answer)
+# User question
+USER_QUESTION = "What is the main idea of the document?"
+
+# Invoke the chain and get the output
+output = rag_chain.invoke(USER_QUESTION)
+
+print(output)
