@@ -14,7 +14,7 @@ from transformers import AutoTokenizer , AutoModelForCausalLM ,pipeline
 from langchain_huggingface import HuggingFaceEmbeddings
 from langchain_huggingface.llms import HuggingFacePipeline
 from langchain.memory import ConversationBufferMemory
-from langchain_community . chat_message_histories import ChatMessageHistory
+from langchain_community.chat_message_histories import ChatMessageHistory
 from langchain_core.runnables import RunnablePassthrough
 from langchain import hub
 
