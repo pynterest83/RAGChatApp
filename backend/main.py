@@ -1,28 +1,31 @@
-from uuid import uuid4
-from langchain_core.documents import Document
-from langchain_community.document_loaders import PyPDFLoader, TextLoader
-from langchain_text_splitters import RecursiveCharacterTextSplitter
-from langchain.chains import ConversationalRetrievalChain
-import torch
-from transformers import BitsAndBytesConfig
-from transformers import AutoTokenizer , AutoModelForCausalLM ,pipeline
-from langchain_huggingface import HuggingFaceEmbeddings
-from langchain_huggingface.llms import HuggingFacePipeline
-from langchain.memory import ConversationBufferMemory
-from langchain_community.chat_message_histories import ChatMessageHistory
+from fastapi import FastAPI
+from fastapi.middleware.cors import CORSMiddleware
+from backend.routes import upload, rag
+from fastapi.responses import RedirectResponse
 
-import warnings
-warnings.filterwarnings("ignore")
+app = FastAPI(
+    title="RAG-SERVER",
+    version="1.0",
+    description="RAG-SERVER API",
+)
 
-TF_ENABLE_ONEDNN_OPTS=0
+# Set CORS
+app.add_middleware(
+    CORSMiddleware,
+    allow_origins=["*"],
+    allow_credentials=True,
+    allow_methods=["*"],
+    allow_headers=["*"],
+)
 
-Loader = PyPDFLoader
-FILE_PATH = "D:/Code/RAGChatApp/test/2404.05961v2.pdf"
-loader = Loader(FILE_PATH)
-documents = loader.load()   # Load the document
+# Include routers
+app.include_router(upload.router, prefix="/upload", tags=["upload"])
+app.include_router(rag.router, prefix="/rag", tags=["rag"])
 
-text_splitter = RecursiveCharacterTextSplitter(chunk_size=1000, chunk_overlap=100)
-docs = text_splitter.split_documents(documents)
-print("Number of documents: ", len(docs))
+@app.get("/")
+async def redirect_root_to_docs():
+    return RedirectResponse(url="/docs")
 
-vector_store.add_documents(docs)
+if __name__ == "__main__":
+    import uvicorn
+    uvicorn.run(app, host="0.0.0.0", port=8000)

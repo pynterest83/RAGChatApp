@@ -6,8 +6,8 @@ from langchain_community.chat_models import ChatCohere
 from .retriever import get_retriever
 from .embeddings import embeddings
 import os
+from utils.config import COHERE_API_KEY
 
-COHERE_API_KEY = os.getenv("COHERE_API_KEY")
 model_name = "command-r-plus"
 
 def get_chain(retriever=Depends(get_retriever)):
