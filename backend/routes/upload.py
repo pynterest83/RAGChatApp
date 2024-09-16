@@ -1,7 +1,7 @@
 from fastapi import APIRouter, File, UploadFile
-from backend.services.embeddings import embeddings
+from services.embeddings import embeddings
 from langchain_qdrant import QdrantVectorStore
-from backend.utils.helpers import generate_group_id, save_file, process_documents
+from utils.helpers import generate_group_id, save_file, process_documents
 
 router = APIRouter()
 colletion_name = "client_documents"

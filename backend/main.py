@@ -1,6 +1,6 @@
 from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
-from backend.routes import upload, rag
+from routes import upload, rag
 from fastapi.responses import RedirectResponse
 
 app = FastAPI(

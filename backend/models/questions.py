@@ -1,4 +1,4 @@
-from pydantic import BaseModel
+from pydantic import RootModel
 
-class Question(BaseModel):
-    __root__: str
+class Question(RootModel[str]):
+    pass

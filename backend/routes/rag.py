@@ -1,8 +1,8 @@
 from fastapi import APIRouter, Depends, HTTPException
-from backend.models.questions import Question
-from backend.models.chat_response import ChatResponse
-from backend.services.chain import get_chain
-from backend.services.retriever import get_retriever
+from models.questions import Question
+from models.chat_response import ChatResponse
+from services.chain import get_chain
+from services.retriever import get_retriever
 
 router = APIRouter()
 
