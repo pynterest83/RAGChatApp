@@ -27,6 +27,7 @@ else:
 def get_retriever(group_id: str):
     return vector_store.as_retriever(
         search_kwargs={
+            'k': 10,
             'filter': {
                 'must': [
                     {'key': 'group_id', 'match': {'value': group_id}}
