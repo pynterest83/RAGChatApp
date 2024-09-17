@@ -1,38 +1,154 @@
-.App {
-  text-align: center;
+/* Chat Container */
+.app-container {
+  display: flex;
+  height: 98vh; /* adjust to fit your design */
+  background-color: #121212; /* Dark background */
 }
 
-.App-logo {
-  height: 40vmin;
-  pointer-events: none;
+.pdf-preview {
+  width: 30%;
+  height: 100%;
+  overflow-y: auto; /* Allows scrolling */
+  border-right: 1px solid #333;
+  background-color: #1a1a1a; /* Darker shade for PDF preview */
 }
 
-@media (prefers-reduced-motion: no-preference) {
-  .App-logo {
-    animation: App-logo-spin infinite 20s linear;
-  }
+.pdf-iframe {
+  width: 100%;
+  height: 100%;
 }
 
-.App-header {
-  background-color: #282c34;
-  min-height: 100vh;
+.chat-container {
+  width: 70%;
+  flex-grow: 1;
   display: flex;
   flex-direction: column;
-  align-items: center;
-  justify-content: center;
-  font-size: calc(10px + 2vmin);
+  border: 1px solid #333;
+  box-shadow: 0 0 10px #0a0a0a;
+  margin: 10px;
+  padding: 10px;
+  background-color: #181818; /* Dark theme for chat container */
+  border-radius: 5px;
+}
+
+/* Message Area */
+.messages-area {
+  flex-grow: 1;
+  overflow-y: auto;
+  padding: 10px;
+  display: flex;
+  flex-direction: column-reverse; /* newest messages at the bottom */
+}
+
+/* Each message */
+.message {
+  max-width: 80%;
+  margin-bottom: 10px;
+  padding: 10px;
+  border-radius: 10px;
+  color: #ffffff; /* White text for readability */
+}
+
+/* User message */
+.user-message {
+  align-self: flex-end;
+  background-color: #007bff; /* Cyberpunk neon blue for user messages */
+  box-shadow: 0 0 6px #00afff; /* Neon glow */
+}
+
+/* Bot message */
+.bot-message {
+  align-self: flex-start;
+  background-color: #11ac71; /* Cyberpunk neon pink for bot messages */
+  box-shadow: 0 0 6px #11ac71; /* Neon glow */
+}
+
+.input-area {
+  display: flex;
+  padding: 10px;
+  color: #fff; /* White text color for visibility */
+}
+
+.input-box {
+  flex-grow: 1;
+  border: 1px solid #333;
+  border-radius: 20px;
+  padding: 10px;
+  margin-right: 10px;
+  background-color: #252525; /* Darker input for contrast */
+  color: #ffffff; /* White text for input */
+}
+
+.send-button {
+  padding: 10px 20px;
+  border: none;
+  background-color: #ff6500; /* Cyberpunk neon orange for send button */
   color: white;
+  border-radius: 20px;
+  cursor: pointer;
+  box-shadow: 0 0 8px #ff6500; /* Neon glow */
 }
 
-.App-link {
-  color: #61dafb;
+.send-button:focus {
+  outline: none;
+  box-shadow: 0 0 0 2px rgba(255, 101, 0, 0.5);
 }
 
-@keyframes App-logo-spin {
-  from {
-    transform: rotate(0deg);
-  }
-  to {
-    transform: rotate(360deg);
-  }
+/* File upload input styling */
+input[type="file"] {
+  color: white; /* Making the file input text visible */
+}
+
+/* Custom file upload button styling */
+.file-upload-btn {
+  background-color: #007bff; /* Cyberpunk neon blue */
+  color: white;
+  padding: 5px 10px;
+  border-radius: 5px;
+  cursor: pointer;
+  margin-right: 10px;
+  box-shadow: 0 0 8px #007bff; /* Neon glow */
+}
+
+.file-upload-btn:hover {
+  background-color: #0056b3; /* Darker shade on hover */
+}
+
+/* Overlay that fills the entire screen */
+.overlay {
+  position: fixed; /* Use fixed position to cover the entire screen */
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background-color: rgba(0, 0, 0, 0.5); /* Semi-transparent black background */
+  display: flex;
+  align-items: center; /* Center vertically */
+  justify-content: center; /* Center horizontally */
+  z-index: 1000; /* Ensure it's above other content */
+}
+
+
+
+.spinner {
+  border: 4px solid rgba(255, 255, 255, 0.3);
+  border-radius: 50%;
+  border-top: 4px solid #007bff; /* Neon blue to match the theme */
+  width: 40px;
+  height: 40px;
+  animation: spin 2s linear infinite;
+  margin: auto;
+}
+
+@keyframes spin {
+  0% { transform: rotate(0deg); }
+  100% { transform: rotate(360deg); }
+}
+
+.error-message {
+  color: #ff5555; /* Cyberpunk error color */
+  text-align: center;
+  padding: 10px;
+  background-color: #000; /* Dark background for visibility */
+  border: 1px solid #ff5555;
 }
