@@ -30,8 +30,6 @@ def build_rag_chain(retriever, user_question: str):
     # Retrieve relevant documents
     retrieved_docs = retriever.invoke(user_question)
 
-    print(retrieved_docs)
-
     # Format the retrieved documents
     formatted_context = format_docs(retrieved_docs)
     

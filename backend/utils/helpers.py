@@ -2,6 +2,7 @@ import secrets
 import shutil
 from langchain_community.document_loaders import PyPDFLoader
 from langchain_text_splitters import RecursiveCharacterTextSplitter
+import os
 
 def generate_group_id():
     return secrets.token_urlsafe(8)
@@ -19,5 +20,7 @@ def process_documents(filename, group_id):
     # Add group_id to the document's metadata
     for doc in all_splits:
         doc.metadata['group_id'] = group_id
+
+    os.remove(filename)
 
     return all_splits
