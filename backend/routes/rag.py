@@ -14,13 +14,9 @@ async def rag_endpoint(
     # Ensure group_id is provided
     if not group_id:
         raise HTTPException(status_code=403, detail="Please upload a document first.")
-
-    print(f"Question: {question.root}")
     
     # Retrieve and run the chain
     retriever = get_retriever(group_id)
     result = build_rag_chain(retriever, question.root)
-
-    print(result)
 
     return {'response': result}
