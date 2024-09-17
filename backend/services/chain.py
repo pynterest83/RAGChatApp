@@ -1,29 +1,35 @@
-from fastapi import Depends
-from langchain.chains import RetrievalQA, StuffDocumentsChain, LLMChain
-from langchain_core.prompts import ChatPromptTemplate
+from langchain_cohere import ChatCohere
 from langchain_core.output_parsers import StrOutputParser
-from langchain_community.chat_models import ChatCohere
-from .retriever import get_retriever
-from .embeddings import embeddings
-import os
-from utils.config import COHERE_API_KEY
+from langchain_core.runnables import RunnablePassthrough
+from langchain_core.pydantic_v1 import BaseModel
+from langchain import hub
+from utils.config import COHERE_API_KEY, LANGCHAIN_API_KEY
+from typing import List
 
-model_name = "command-r-plus"
+# Initialize the LLM model (Cohere) with the command-r-plus model
+llm = ChatCohere(model="command-r-plus", cohere_api_key=COHERE_API_KEY)
 
-def get_chain(retriever=Depends(get_retriever)):
-    template = """Answer the question based only on the following context:
-    {context}
-    Question: {question}"""
+# Pull the prompt template from a repository using a specific API key
+prompt = hub.pull("rlm/rag-prompt", api_key=LANGCHAIN_API_KEY)
+# Function to format documents into a single string
+def format_docs(docs: List[BaseModel]) -> str:
+    """Formats the documents into a concatenated string for processing."""
+    return "\n\n".join(doc.page_content for doc in docs)
+
+# Function to construct and execute the RAG chain
+def build_rag_chain(retriever, user_question: str):
+    """Builds and invokes the RAG chain to answer the user question."""
     
-    prompt = ChatPromptTemplate.from_template(template)
-    model = ChatCohere(model=model_name, cohere_api_key=COHERE_API_KEY)
-    output_parser = StrOutputParser()
-
-    # Create the LLMChain
-    llm_chain = LLMChain(llm=model, prompt=prompt, output_parser=output_parser)
-
-    # Create the StuffDocumentsChain
-    stuff_documents_chain = StuffDocumentsChain(llm_chain=llm_chain, document_variable_name="context")
-
-    # Create the RetrievalQA chain
-    return RetrievalQA(combine_documents_chain=stuff_documents_chain, retriever=retriever)
+    # Define the chain of operations: retrieve, format, prompt, process with LLM, and parse the output
+    rag_chain = (
+        {
+            "context": retriever | format_docs,  # Retrieve documents and format them
+            "question": RunnablePassthrough()     # Pass the user question unchanged
+        }
+        | prompt                                 # Use the pre-defined prompt template
+        | llm                                    # Pass the prompt to the LLM for processing
+        | StrOutputParser()                      # Parse the final output as a string
+    )
+    
+    # Invoke the chain with the user's question and return the output
+    return rag_chain.invoke(user_question)

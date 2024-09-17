@@ -10,6 +10,8 @@ async def upload_file(file: UploadFile = File(...)):
     save_file(file)
     all_splits = process_documents(file.filename, group_id)
 
+    print(all_splits[0])
+
     # Use the centralized vector_store to store embeddings
     vector_store.add_documents(all_splits)
 
