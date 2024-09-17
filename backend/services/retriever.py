@@ -26,6 +26,6 @@ vector_store = QdrantVectorStore(
 )
 
 def get_retriever(group_id: str):
-    return client.as_retriever(
+    return vector_store.as_retriever(
         search_kwargs={'filter': {'group_id': group_id}}
     )

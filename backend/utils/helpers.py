@@ -10,12 +10,14 @@ def save_file(file):
     with open(file.filename, "wb") as buffer:
         shutil.copyfileobj(file.file, buffer)
 
-def process_documents(file_name, group_id):
-    loader = PyPDFLoader(file_name)   # Load the document
-    documents = loader.load()   # Load the document
-
+def process_documents(filename, group_id):
+    loader = PyPDFLoader(filename)
+    data = loader.load()
     text_splitter = RecursiveCharacterTextSplitter(chunk_size=1000, chunk_overlap=100)
-    all_splits = text_splitter.split_documents(documents)
+    all_splits = text_splitter.split_documents(data)
+
+    # Add group_id to the document's metadata
     for doc in all_splits:
-        doc.group_id = group_id
+        doc.metadata['group_id'] = group_id
+
     return all_splits
