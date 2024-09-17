@@ -1,7 +1,7 @@
 from langchain_qdrant import QdrantVectorStore
 from qdrant_client import QdrantClient
 from .embeddings import embeddings
-from qdrant_client.http.models import Distance, VectorParams
+from qdrant_client.http.models import Distance, VectorParams, Filter, FieldCondition, MatchValue
 
 client = QdrantClient(url="http://localhost:6333")
 
@@ -25,13 +25,16 @@ else:
     )
 
 def get_retriever(group_id: str):
-    return vector_store.as_retriever(
-        search_kwargs={
-            'k': 10,
-            'filter': {
-                'must': [
-                    {'key': 'group_id', 'match': {'value': group_id}}
+    filters = Filter(
+        should=[
+            Filter(
+                must=[
+                    FieldCondition(
+                        key="group_id",
+                        match=MatchValue(value=group_id)
+                    )
                 ]
-            }
-        }
+            )
+        ]
     )
+    return vector_store.as_retriever(kwargs={"filters": filters})
