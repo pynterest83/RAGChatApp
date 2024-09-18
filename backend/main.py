@@ -1,6 +1,6 @@
 from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
-from routes import upload, rag
+from routes import upload, rag, auth
 from fastapi.responses import RedirectResponse
 
 app = FastAPI(
@@ -21,6 +21,7 @@ app.add_middleware(
 # Include routers
 app.include_router(upload.router, prefix="/upload", tags=["upload"])
 app.include_router(rag.router, prefix="/rag", tags=["rag"])
+app.include_router(auth.router, prefix="/auth", tags=["auth"])  # New auth routes
 
 @app.get("/")
 async def redirect_root_to_docs():
