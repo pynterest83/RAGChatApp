@@ -1,5 +1,6 @@
 import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
+import "./SignupForm.css";
 
 const API_ENDPOINT = "http://127.0.0.1:8000"; // Your backend
 
@@ -54,30 +55,30 @@ function SignupForm({ onSignupSuccess }) {
       {error && <div className="error-message">{error}</div>}
       <form onSubmit={handleSignup}>
         <div>
-          <label>Username:</label>
           <input
             type="text"
             value={username}
             onChange={(e) => setUsername(e.target.value)}
             required
+            placeholder="Username"
           />
         </div>
         <div>
-          <label>Password:</label>
           <input
             type="password"
             value={password}
             onChange={(e) => setPassword(e.target.value)}
             required
+            placeholder="Password"
           />
         </div>
         <div>
-          <label>Confirm Password:</label>
           <input
             type="password"
             value={confirmPassword}
             onChange={(e) => setConfirmPassword(e.target.value)}
             required
+            placeholder="Confirm Password"
           />
         </div>
         <button type="submit" disabled={isLoading}>

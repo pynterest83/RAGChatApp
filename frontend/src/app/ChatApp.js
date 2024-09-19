@@ -52,7 +52,7 @@ function ChatApp() {
         {
           method: "POST",
           headers: { "Content-Type": "application/json" },
-          body: JSON.stringify({ message }), // match the backend's expected payload
+          body: JSON.stringify( message ), // match the backend's expected payload
         }
       );
 

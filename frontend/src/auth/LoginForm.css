@@ -1,0 +1,56 @@
+/* LoginForm.css */
+
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+body, html {
+  height: 100%;
+  font-family: 'Arial', sans-serif;
+}
+
+form {
+  background-color: white;
+  text-align: center;
+  width: 300px;
+}
+
+form input {
+  width: 100%;
+  padding: 10px;
+  margin-bottom: 1rem;
+  border-radius: 5px;
+  border: 1px solid #e2e8f0;
+  font-size: 1rem;
+  outline: none;
+}
+
+form input:focus {
+  border-color: black;
+}
+
+form button {
+  width: 100%;
+  padding: 10px;
+  border: none;
+  border-radius: 5px;
+  background-color: black;
+  color: white;
+  font-size: 1rem;
+  cursor: pointer;
+}
+
+form button:disabled {
+  background-color: #94a3b8;
+}
+
+form button:hover:not(:disabled) {
+  background-color: darkgrey;
+}
+
+.error-message {
+  color: red;
+  margin-bottom: 1rem;
+}

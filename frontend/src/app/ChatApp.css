@@ -1,7 +1,8 @@
 /* Chat Container */
 .app-container {
   display: flex;
-  height: 98vh; /* adjust to fit your design */
+  height: 100vh; /* adjust to fit your design */
+  width: 100vw; /* adjust to fit your design */
   background-color: #121212; /* Dark background */
 }
 
