@@ -1,4 +1,3 @@
-# routes/auth.py
 from fastapi import APIRouter, Depends, HTTPException
 from pydantic import BaseModel
 from services.auth_services import hash_password, verify_password, create_access_token
