@@ -15,32 +15,38 @@ function ChatApp() {
   const uploadDocument = async () => {
     if (!file) return;
     setIsLoading(true); // Start loading
-
+  
     const formData = new FormData();
     formData.append("file", file);
-
+  
+    // Get the token from localStorage
+    const token = localStorage.getItem('token');
+  
     try {
       const response = await fetch(
-        `${API_ENDPOINT}/upload`, // Upload route from backend
-        { method: "POST", body: formData }
+        `${API_ENDPOINT}/upload/?access_token=${token}`, // Token passed as a query parameter
+        { 
+          method: "POST", 
+          body: formData 
+        }
       );
-
+  
       if (!response.ok) {
         throw new Error(`HTTP error! status: ${response.status}`);
       }
-
+  
       const result = await response.json();
       console.log("Document uploaded", result);
       setGroupId(result.group_id);
-      setConversation([]); 
+      setConversation([]);
       setPdfUrl(URL.createObjectURL(file)); // Create a URL for the uploaded file and set it
     } catch (error) {
       console.error("Error uploading document:", error);
-      setError("There is a temporary issue with the server. Please try again later."); // Set the error message
+      setError("There is a temporary issue with the server. Please try again later.");
     } finally {
       setIsLoading(false); // Stop loading
     }
-  };
+  };  
 
   const sendMessage = async () => {
     if (message.trim() === "" || !groupId) return;
