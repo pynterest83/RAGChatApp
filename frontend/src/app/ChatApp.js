@@ -109,6 +109,25 @@ function ChatApp() {
       )}
 
       <div className={`app-container ${isLoading ? 'faded' : ''}`}>
+        <div class="left-bar">
+          <div class="chat-menu">
+            <div class="new-chat-item">
+              <span>New Chat</span>
+            </div>
+            <div class="menu-item">
+              <span>Chat 1</span>
+            </div>
+            <div class="menu-item">
+              <span>Chat 2</span>
+            </div>
+            <div class="menu-item">
+              <span>Chat 3</span>
+            </div>
+            <div class="menu-item">
+              <span>Chat 4</span>
+            </div>
+          </div>
+        </div>
         <div className="pdf-preview">
           {pdfUrl && (
             <iframe
