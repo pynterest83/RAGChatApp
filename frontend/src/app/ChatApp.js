@@ -37,9 +37,13 @@ function ChatApp() {
   
       const result = await response.json();
       console.log("Document uploaded", result);
-      setGroupId(result.group_id);
+      const newGroupId = result.group_id;  // Extract the group_id
+      setGroupId(newGroupId); // Update state with the new group_id
       setConversation([]);
       setPdfUrl(URL.createObjectURL(file)); // Create a URL for the uploaded file and set it
+  
+      // Use the newGroupId directly after it's fetched
+      window.history.pushState({}, '', `/group_id/${newGroupId}`);
     } catch (error) {
       console.error("Error uploading document:", error);
       setError("There is a temporary issue with the server. Please try again later.");
