@@ -7,7 +7,6 @@ from fastapi import Depends, HTTPException
 from utils.config import ALGORITHM, SECRET_KEY, ACCESS_TOKEN_EXPIRE_MINUTES
 from utils.db import get_db
 from fastapi.security import OAuth2PasswordBearer   
-from fastapi import status
 
 oauth2_scheme = OAuth2PasswordBearer(tokenUrl="auth/login")
 pwd_context = CryptContext(schemes=["bcrypt"], deprecated="auto")
@@ -52,4 +51,18 @@ def authenticate_user(db: Session, username: str, password: str):
         return False
     if not verify_password(password, user.password):
         return False
+    return user
+
+# Get current user
+def get_current_user(token: str, db: Session = Depends(get_db)):
+    try:
+        payload = jwt.decode(token, SECRET_KEY, algorithms=[ALGORITHM])
+        username: str = payload.get("sub")
+        if username is None:
+            raise HTTPException(status_code=400, detail="Invalid token")
+    except JWTError:
+        raise HTTPException(status_code=400, detail="Invalid token")
+    user = get_user_by_username(db, username)
+    if user is None:
+        raise HTTPException(status_code=400, detail="User not found")
     return user

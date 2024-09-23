@@ -13,6 +13,36 @@ function ChatApp() {
   const [error, setError] = useState(null);
   const [menuItems, setMenuItems] = useState([]);
 
+  const getUserDocument = async () => {
+    setIsLoading(true); // Start loading
+
+    // Get the token from localStorage
+    const token = localStorage.getItem('token');
+
+    try {
+      const response = await fetch(
+        `${API_ENDPOINT}/upload/?token=${token}`, // Token passed as a query parameter
+        { method: "GET" }
+      );
+
+      if (!response.ok) {
+        throw new Error(`HTTP error! status: ${response.status}`);
+      }
+
+      const data = await response.json();
+      console.log("User documents fetched", data);
+
+      // Extract the group_id and document name from the response
+      const items = data.map((item) => ({ name: item.document_name, group_id: item.group_id }));
+      setMenuItems(items);
+    } catch (error) {
+      console.error("Error fetching user documents:", error);
+      setError("There is a temporary issue with the server. Please try again later.");
+    } finally {
+      setIsLoading(false); // Stop loading
+    }
+  };
+
   const uploadDocument = async () => {
     if (!file) return;
     setIsLoading(true); // Start loading
@@ -25,7 +55,7 @@ function ChatApp() {
   
     try {
       const response = await fetch(
-        `${API_ENDPOINT}/upload/?access_token=${token}`, // Token passed as a query parameter
+        `${API_ENDPOINT}/upload/?token=${token}`, // Token passed as a query parameter
         { 
           method: "POST", 
           body: formData 
