@@ -11,6 +11,7 @@ function ChatApp() {
   const [pdfUrl, setPdfUrl] = useState(null); // State to store the PDF URL
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState(null);
+  const [menuItems, setMenuItems] = useState([]);
 
   const uploadDocument = async () => {
     if (!file) return;
@@ -44,6 +45,9 @@ function ChatApp() {
   
       // Use the newGroupId directly after it's fetched
       window.history.pushState({}, '', `/group_id/${newGroupId}`);
+
+      const documentName = file.name;
+      setMenuItems((items) => [...items, { name: documentName, group_id: newGroupId }]);
     } catch (error) {
       console.error("Error uploading document:", error);
       setError("There is a temporary issue with the server. Please try again later.");
@@ -118,18 +122,11 @@ function ChatApp() {
             <div class="new-chat-item">
               <span>New Chat</span>
             </div>
-            <div class="menu-item">
-              <span>Chat 1</span>
-            </div>
-            <div class="menu-item">
-              <span>Chat 2</span>
-            </div>
-            <div class="menu-item">
-              <span>Chat 3</span>
-            </div>
-            <div class="menu-item">
-              <span>Chat 4</span>
-            </div>
+            {menuItems.map((item, index) => (
+              <div key={index} className="menu-item">
+                <span>{item.name}</span> {/* Display the document name */}
+              </div>
+            ))}
           </div>
         </div>
         <div className="pdf-preview">
