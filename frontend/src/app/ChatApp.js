@@ -1,4 +1,5 @@
 import React, { useState } from "react";
+import { useEffect } from "react";
 import "./ChatApp.css";
 
 const API_ENDPOINT = "http://127.0.0.1:8000"; // Your local backend
@@ -33,7 +34,7 @@ function ChatApp() {
       console.log("User documents fetched", data);
 
       // Extract the group_id and document name from the response
-      const items = data.map((item) => ({ name: item.document_name, group_id: item.group_id }));
+      const items = data.map((item) => ({ name: item.doc_name, group_id: item.group_id }));
       setMenuItems(items);
     } catch (error) {
       console.error("Error fetching user documents:", error);
@@ -42,6 +43,10 @@ function ChatApp() {
       setIsLoading(false); // Stop loading
     }
   };
+
+  useEffect(() => {
+    getUserDocument();
+  }, []);
 
   const uploadDocument = async () => {
     if (!file) return;
@@ -152,7 +157,7 @@ function ChatApp() {
             <div class="new-chat-item">
               <span>New Chat</span>
             </div>
-            {menuItems.map((item, index) => (
+            {menuItems.slice().reverse().map((item, index) => (
               <div key={index} className="menu-item">
                 <span>{item.name}</span> {/* Display the document name */}
               </div>
