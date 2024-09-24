@@ -23,4 +23,9 @@ async def rag_endpoint(
 
 @router.get("/")
 async def load_rag():
-    return {"message": "RAG model loaded successfully"}
+    pass
+
+@router.post("/save")
+async def save_rag(messages: list):
+    # Save the messages to the database
+    pass
