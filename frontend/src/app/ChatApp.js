@@ -141,6 +141,36 @@ function ChatApp() {
     setFile(event.target.files[0]);
   };
 
+  const handleSessionChange = async (selectedGroupId) => {
+    setIsLoading(true); // Start loading
+    setGroupId(selectedGroupId); // Update the groupId to the selected one
+
+    try {
+      const response = await fetch(
+        `${API_ENDPOINT}/rag/?group_id=${selectedGroupId}`, // Fetch conversation for the selected document
+        {
+          method: "GET",
+        }
+      );
+
+      if (!response.ok) {
+        throw new Error(`HTTP error! status: ${response.status}`);
+      }
+
+      // const data = await response.json();
+      // setConversation(data.conversation); // Assuming data.conversation contains the chat history
+      // setPdfUrl(data.pdfUrl); // Assuming the backend sends the PDF URL for the document
+
+      // Update the URL without reloading the page
+      window.history.pushState({}, '', `/chat/${selectedGroupId}`);
+    } catch (error) {
+      console.error("Error fetching document conversation:", error);
+      setError("There is a temporary issue with the server. Please try again later.");
+    } finally {
+      setIsLoading(false); // Stop loading
+    }
+  };
+
   return (
     <>
       {error && <div className="error-message">{error}</div>}
@@ -158,7 +188,7 @@ function ChatApp() {
               <span>New Chat</span>
             </div>
             {menuItems.slice().reverse().map((item, index) => (
-              <div key={index} className="menu-item">
+              <div key={index} className="menu-item" onClick={() => handleSessionChange(item.group_id)}>
                 <span>{item.name}</span> {/* Display the document name */}
               </div>
             ))}

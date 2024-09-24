@@ -20,3 +20,7 @@ async def rag_endpoint(
     result = build_rag_chain(retriever, question.root)
 
     return {'response': result}
+
+@router.get("/")
+async def load_rag():
+    return {"message": "RAG model loaded successfully"}
