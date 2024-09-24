@@ -144,7 +144,7 @@ function ChatApp() {
   const handleSessionChange = async (selectedGroupId) => {
     setIsLoading(true); // Start loading
     setGroupId(selectedGroupId); // Update the groupId to the selected one
-
+  
     try {
       const response = await fetch(
         `${API_ENDPOINT}/rag/?group_id=${selectedGroupId}`, // Fetch conversation for the selected document
@@ -152,15 +152,16 @@ function ChatApp() {
           method: "GET",
         }
       );
-
+  
       if (!response.ok) {
         throw new Error(`HTTP error! status: ${response.status}`);
       }
-
-      // const data = await response.json();
-      // setConversation(data.conversation); // Assuming data.conversation contains the chat history
-      // setPdfUrl(data.pdfUrl); // Assuming the backend sends the PDF URL for the document
-
+  
+      const data = await response.json();
+      
+      // Update conversation with the fetched messages
+      setConversation(data.conversation); // Assuming data.conversation contains the chat history
+  
       // Update the URL without reloading the page
       window.history.pushState({}, '', `/chat/${selectedGroupId}`);
     } catch (error) {
@@ -169,6 +170,17 @@ function ChatApp() {
     } finally {
       setIsLoading(false); // Stop loading
     }
+  };  
+
+  // New function to reset the chat
+  const resetChat = () => {
+    setMessage("");
+    setConversation([]);
+    setFile(null);
+    setGroupId(null);
+    setPdfUrl(null);
+    setError(null);
+    window.history.pushState({}, '', '/chat/'); // Reset the URL
   };
 
   return (
@@ -184,7 +196,7 @@ function ChatApp() {
       <div className={`app-container ${isLoading ? 'faded' : ''}`}>
         <div class="left-bar">
           <div class="chat-menu">
-            <div class="new-chat-item">
+            <div class="new-chat-item" onClick={resetChat}>
               <span>New Chat</span>
             </div>
             {menuItems.slice().reverse().map((item, index) => (

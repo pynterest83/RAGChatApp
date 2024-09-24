@@ -37,5 +37,33 @@ async def rag_endpoint(
     return {'response': result}
 
 @router.get("/")
-async def load_rag():
-    pass
+async def load_rag(
+    group_id: str = Query(..., description="The group_id for the document"),
+    db: Session = Depends(get_db)
+):
+    # Ensure group_id is provided
+    if not group_id:
+        raise HTTPException(status_code=403, detail="Please provide a group_id.")
+
+    # Retrieve the conversation for the group_id
+    messages = db.query(Message).filter(Message.group_id == group_id).all()
+
+    # If no messages found, return an empty list
+    if not messages:
+        return {"conversation": []}
+
+    # Format the conversation for the frontend
+    conversation = []
+    for msg in messages:
+        # If sender_id is 1, mark it as 'user', else 'bot'
+        sender = "user" if msg.sender_id == 1 else "bot"
+        conversation.append({
+            "text": msg.message,
+            "from": sender,
+            "order": msg.message_id
+        })
+    
+    # Sort the conversation by the 'order' (message_id)
+    sorted_conversation = sorted(conversation, key=lambda x: x["order"], reverse=True)
+
+    return {"conversation": sorted_conversation}
