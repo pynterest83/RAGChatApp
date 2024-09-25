@@ -227,3 +227,22 @@ input[type="file"] {
   background-color: #000; /* Dark background for visibility */
   border: 1px solid #ff5555;
 }
+
+.icon-button {
+  background-color: transparent; /* Transparent background */
+  border: none;
+  cursor: pointer;
+  width: 30px;   /* Set width and height for the icon */
+  height: 30px;
+  background-size: cover;  /* Ensure the background image covers the button */
+}
+
+/* Custom style for the "Upload Document" button */
+.upload-file {
+  background-image: url("up-loading.png"); /* Upload icon */
+}
+
+.choose-file {
+  margin-right: 50px;
+  background-image: url("paper.png"); /* File icon */
+}

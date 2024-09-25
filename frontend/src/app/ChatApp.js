@@ -217,8 +217,15 @@ function ChatApp() {
         </div>
         <div className="chat-container">
           <div className="input-area">
-            <input type="file" accept="application/pdf" onChange={handleFileChange} />
-            <button onClick={uploadDocument}>Upload Document</button>
+            <label htmlFor="file-upload" className="icon-button choose-file"></label>
+            <input
+              id="file-upload"
+              type="file"
+              accept="application/pdf"
+              style={{ display: 'none' }} // Hide the input field
+              onChange={handleFileChange}
+            />
+            <button onClick={uploadDocument} className="icon-button upload-file"></button>
           </div>
           <div className="messages-area">
             {conversation.map((c, index) => (
