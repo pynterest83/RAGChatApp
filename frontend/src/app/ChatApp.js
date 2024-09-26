@@ -48,6 +48,17 @@ function ChatApp() {
     getUserDocument();
   }, []);
 
+  // Automatically hide the error message after 3 seconds
+  useEffect(() => {
+    if (error) {
+      const timer = setTimeout(() => {
+        setError(null);
+      }, 3000); // Hide the error after 3 seconds
+  
+      return () => clearTimeout(timer); // Clean up the timeout on component unmount or re-render
+    }
+  }, [error]);
+
   const uploadDocument = async () => {
     if (!file) return;
     setIsLoading(true); // Start loading
@@ -185,8 +196,6 @@ function ChatApp() {
 
   return (
     <>
-      {error && <div className="error-message">{error}</div>}
-
       {isLoading && (
         <div className="overlay">
           <div className="spinner"></div>
@@ -216,6 +225,7 @@ function ChatApp() {
           )}
         </div>
         <div className="chat-container">
+        {error && <div className="error-message">{error}</div>}
           <div className="input-area">
             <label htmlFor="file-upload" className="icon-button choose-file"></label>
             <input
