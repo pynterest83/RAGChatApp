@@ -127,15 +127,12 @@
 /* User message */
 .user-message {
   align-self: flex-end;
-  background-color: #007bff; /* Cyberpunk neon blue for user messages */
-  box-shadow: 0 0 6px #00afff; /* Neon glow */
+  background-color: #2b2b2b ; /* Cyberpunk neon blue for user messages */
 }
 
 /* Bot message */
 .bot-message {
   align-self: flex-start;
-  background-color: #11ac71; /* Cyberpunk neon pink for bot messages */
-  box-shadow: 0 0 6px #11ac71; /* Neon glow */
 }
 
 .input-area {
@@ -245,4 +242,8 @@ input[type="file"] {
 .choose-file {
   margin-right: 50px;
   background-image: url("paper.png"); /* File icon */
+}
+
+.send-messages {
+  background-image: url("send.png"); /* Send icon */
 }

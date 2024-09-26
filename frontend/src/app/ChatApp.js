@@ -246,9 +246,7 @@ function ChatApp() {
               onKeyPress={handleKeyPress}
               placeholder="Type a message..."
             />
-            <button className="send-button" onClick={sendMessage}>
-              Send
-            </button>
+            <button className="icon-button send-messages" onClick={sendMessage}></button>
           </div>
         </div>
       </div>
