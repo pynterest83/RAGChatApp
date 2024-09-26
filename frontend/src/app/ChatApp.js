@@ -181,7 +181,7 @@ function ChatApp() {
     } finally {
       setIsLoading(false); // Stop loading
     }
-  };  
+  }; 
 
   // New function to reset the chat
   const resetChat = () => {
@@ -192,6 +192,12 @@ function ChatApp() {
     setPdfUrl(null);
     setError(null);
     window.history.pushState({}, '', '/chat/'); // Reset the URL
+  };
+
+  // New function to handle logout
+  const handleLogout = () => {
+    localStorage.removeItem('token'); // Remove the token from localStorage
+    window.location.href = '/login'; // Redirect to the login page
   };
 
   return (
@@ -213,6 +219,10 @@ function ChatApp() {
                 <span>{item.name}</span> {/* Display the document name */}
               </div>
             ))}
+          </div>
+          <div>
+            <button className="icon-button logout-button" onClick={handleLogout}></button>
+            <span className="title-text">DocuGPT</span>
           </div>
         </div>
         <div className="pdf-preview">

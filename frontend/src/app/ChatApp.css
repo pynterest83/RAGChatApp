@@ -18,7 +18,7 @@
 }
 
 .chat-menu {
-  max-height: 90vh;
+  height: 90vh;
   display: flex;
   flex-direction: column;
   overflow-y: auto;
@@ -246,4 +246,17 @@ input[type="file"] {
 
 .send-messages {
   background-image: url("send.png"); /* Send icon */
+}
+
+.logout-button {
+  margin-top: 10px;
+  margin-left: 10px;
+  background-image: url('up-loading.png');
+  rotate: -90deg;
+}
+
+.title-text {
+  font-size: 40px;
+  font-weight: bold;
+  margin: 10px;
 }
