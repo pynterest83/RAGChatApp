@@ -1,4 +1,5 @@
 import React, { useState } from "react";
+import { useEffect } from "react";
 import LoginForm from "./auth/LoginForm";
 import SignupForm from "./auth/SignupForm";
 import ChatApp from "./app/ChatApp";
@@ -15,6 +16,14 @@ const App = () => {
     setCurrentPage("login"); // Redirect to login page after successful signup
   };
 
+  // On component mount, check if the user is logged in
+  useEffect(() => {
+    const isLoggedIn = localStorage.getItem("token");
+    if (isLoggedIn) {
+      setCurrentPage("chat"); // Navigate to chat if user is already logged in
+    }
+  }, []);
+  
   return (
     <div className="app">
       {currentPage === "login" && (
