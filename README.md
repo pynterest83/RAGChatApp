@@ -4,12 +4,12 @@ This project is a full-stack web application for document-based interactions usi
 
 # How to use
 1. Clone the repository
-git clone https://github.com/your-username/your-repo.git
-cd your-repo/backend
+```git clone https://github.com/your-username/your-repo.git```
+```cd your-repo/backend```
 2. Configure environment variables
-LANGCHAIN_API = "YOUR OWN API"
-COHERE_API = "YOUR OWN API"
+```LANGCHAIN_API = "YOUR OWN API"```
+```COHERE_API = "YOUR OWN API"```
 3. Run the backend using Docker
-docker-compose up --build
+```docker-compose up --build```
 4. Run the frontend
 Use the provided deployed frontend link to run
