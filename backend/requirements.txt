@@ -1,0 +1,9 @@
+fastapi[all]
+uvicorn
+python-dotenv
+sqlalchemy
+pydantic
+langchain
+qdrant_client
+langchain_qdrant
+langchain_cohere
