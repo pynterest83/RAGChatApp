@@ -1,6 +1,7 @@
 import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import "./LoginForm.css"
+import Cookies from "js-cookie";
 
 const API_ENDPOINT = "http://127.0.0.1:8000";
 
@@ -32,7 +33,7 @@ function LoginForm({ onLoginSuccess }) {
             }
             
             const data = await response.json();
-            localStorage.setItem("token", data.access_token); // Store JWT token in localStorage
+            Cookies.set("token", data.access_token, {expires: 7}); // Store JWT token in cookies
             onLoginSuccess(); // Call the login success handler
             navigate('/chat'); // Redirect to ChatApp page after login
         } catch (error) {

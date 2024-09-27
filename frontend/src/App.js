@@ -4,6 +4,7 @@ import LoginForm from "./auth/LoginForm";
 import SignupForm from "./auth/SignupForm";
 import ChatApp from "./app/ChatApp";
 import "./App.css";
+import Cookies from "js-cookie";
 
 const App = () => {
   const [currentPage, setCurrentPage] = useState("login"); // State to track current page
@@ -18,7 +19,7 @@ const App = () => {
 
   // On component mount, check if the user is logged in
   useEffect(() => {
-    const isLoggedIn = localStorage.getItem("token");
+    const isLoggedIn = Cookies.get("token");
     if (isLoggedIn) {
       setCurrentPage("chat"); // Navigate to chat if user is already logged in
     }

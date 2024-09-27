@@ -1,6 +1,7 @@
 import React, { useState } from "react";
 import { useEffect } from "react";
 import "./ChatApp.css";
+import Cookies from "js-cookie";
 
 const API_ENDPOINT = "http://127.0.0.1:8000"; // Your local backend
 
@@ -18,7 +19,7 @@ function ChatApp() {
     setIsLoading(true); // Start loading
 
     // Get the token from localStorage
-    const token = localStorage.getItem('token');
+    const token = Cookies.get("token");
 
     try {
       const response = await fetch(
@@ -67,7 +68,7 @@ function ChatApp() {
     formData.append("file", file);
   
     // Get the token from localStorage
-    const token = localStorage.getItem('token');
+    const token = Cookies.get("token");
   
     try {
       const response = await fetch(
@@ -196,7 +197,7 @@ function ChatApp() {
 
   // New function to handle logout
   const handleLogout = () => {
-    localStorage.removeItem('token'); // Remove the token from localStorage
+    Cookies.remove("token"); // Remove the token from cookies
     window.location.href = '/login'; // Redirect to the login page
   };
 
